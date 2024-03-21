@@ -114,7 +114,7 @@ Fundamental concepts of data engineering including ETL, relational database prin
         - Identity authentication, payment transactions
       - Serverless billing model
           - Pay for service vs renting serers
-### Cloud Deployment Models###
+### Cloud Deployment Models
 - Defines control you need over your cloud environment
 - Public
       - Shared and open use infrastructure for general public
@@ -141,7 +141,7 @@ Fundamental concepts of data engineering including ETL, relational database prin
 - Community
     - Infrastructure shared by specific community for exclusive use
     - Share common interest such as security, jurisdiction, mission
-### Cloud Regulations###
+### Cloud Regulations
 - General Data Protection Regulations (GDPR)
     - Regulates how personal data is collected, processed, and stored from users in EU
           - Users must explicity consent to data collection
@@ -155,14 +155,14 @@ Fundamental concepts of data engineering including ETL, relational database prin
         - Home address     - First name        - last name   
         - locaton          - IP address        - race / ethinic origin
         - political id     - sex orientation   -health related data
-### AWS###
+### AWS
 - Storage = S3 AWS Simple Storage Services
 - Computing = EC2 AWS Elastic Compute Cloud
 - Database = RDS AWS Relational Database Service
 - Data warehousing = Redshift
 - Analytics service = Kinsesis
 - Machine Learning = SageMaker
-### Microsoft Azure###
+### Microsoft Azure
 - Storage = Azure Blob Storage
 - Computing = Azure Virtual Machines
 - Database = Aure SQL Database
@@ -170,10 +170,125 @@ Fundamental concepts of data engineering including ETL, relational database prin
 - Data Lake = Data Lake Storage
 - Analytics Service = Stram Analytics
 - Machine Learning = Machine Learning
-### Google Cloud###
+### Google Cloud
 - Storage = Google Cloud Storage
 - Computing = GC Compute Engine
 - Database = GC SQL
 - Data warehousing = Big Query
 - Analytics Service = Dataflow
 - Machine Learning = AutoML
+## Creating Relataional Databases using SQL
+- information_schema provides metadata on database
+  - Find table names:
+      SELECT table_schema, table_name
+      FROM information_schema.tables;
+  - Find column names:
+      SELECT table_name, column_name, data_type
+      FROM information_schema.columns
+      WHERE table_name = 'pg_config';
+### Tables
+****Creating Tables****
+  CREATE TABLE table_name (
+      column_a data_type,
+      column_b data_type,
+      column_c data_type
+      );
+ ****Alter Tables****
+ - Add columns to table
+   ****ALTER TABLE**** table_name
+   ****ADD COLUMN**** column_name data_type;
+- Adding values into new columns
+    ****INSERT **** table_name (column_a, column_b)
+    ****VALUES**** ("value_a", "value_b");
+      use existing values from columns use:
+      SELECT colum name
+      FROM table 
+- Renaming columns
+    ALTER TABLE table_name
+    ****RENAME COLUMN**** old_name TO new_name;
+- Removing columns from tables when columns are empty
+    ALTER TABLE table_name
+    ****DROP COLUMN**** column_name;
+### Adding Constraints
+#### Attribute constraints
+    - #### data type constraints
+    - defined when creating or altering columns
+        ALTER TABLE students
+        ALTER COLUMN average_grade
+        ****TYPE**** integer  changes average grade to int from float
+        ****USING**** ROUND(average_grade)  specifies value rounding reduces decimals
+              - can select substrings of text
+                  ****SUBSTRING**** (column_name FROM start_point FOR num_charagters)
+    - change data type in query using CAST
+        SELECT temperature + ****CAST****(wind_speed ****AS**** integer)
+    - #### NULL, NOT NULL, UNIQUE constrains
+        - add NOT NULL after data_type when creating column
+            column_a integer ****NOT NULL****,
+        - add NOT NULL to existing column
+            ALTER TABLE table_name
+            ALTER COLUMN column_name
+            ****SET NOT NULL****;
+        - Adding UNIQUE to existing table
+            ALTER TABLE table_name
+            ****ADD CONSTRAINT**** some_name ****UNIQUE****(column_name)
+#### Key Constraints
+- Super keys are keys made up of a combination of fields to create unique records
+    - Candidate keys are minimal keys which refer to 1 field 
+    - ****Primary Keys****
+      - Selected from candidate keys
+      - Uniquely identifies records
+      - Unique and not-null constraints apply
+      - Assign to new tables
+            CREATE TABLE table_name (
+            column_name data_type PRIMARY KEY,
+        - Assign to existing tables
+             ALTER TABLE table_name
+             ADD CONSTRAINT some_name PRIMARY KEY (column_name)
+        - ****id serial** creates a list of numbers great for creating id
+    - ****Foreign keys****
+        - Connects to Primary Key of another table to connect them
+              - Domain of FK must equal domain of PK
+        - Are not actual keys since duplicate and null values may exist
+        - Created by referencing Primary key in another table
+             CREATE TABLE table_name (
+             column data_type PRIMARY KEY,
+             column_b FOREIGN KEY 
+
+              ALTER TABLE a
+              ADD CONSTRAINT a_fkey FOREIGN KEY (b_id) References table(id)
+                  - here foreing key 
+  #### Referential Integrity constraints
+- A record referencing another table must refer to an existing record in that table
+- Enforced through foreign keys which helps to prevent errors
+  - If record in table is deleated or record in table a does not exist then an error
+        CREATE TABLE a (
+        id integer PRIMARY KEY,
+        column_a varchar(64),
+        b_id integer REFERENCED table b(id) ****ON DELETE NO ACTION****
+      - ON DELETE ****CASCASE****
+            - Deletes record in table b then deletes all references in table a
+        - ON DELETE ****SET NULL**** sets referencing column to Null
+        - ON DELETE ****SET DEFULT**** changes referene column to set defult value
+## Database Design
+- Must consider
+  - Schemas: how should data be logically organized?
+  - Normalization: Should data have minimal dependency and redundancy?
+  - Views: What joins will be done most?
+  - Access Control: Should all users ahve same access level?
+  - DBMS: how to choose between SQL and noSQL options?
+#### OLTP vs OLAP
+ - Online Transcation Processing (focus on day to day tasks)
+    - Application orientated
+    - Up-to-date operational data
+    - Size is snapshot (gigabytes)
+    - Queries simple transaction & frequent updates
+    - More people use
+ - Oline Analytical Processing (focus on business decision making)
+   - Subject orienteated
+   - Consoidated or historical data
+   - Size is archives (terabytes)
+   - Queries complex, aggregate queries with limited updates
+   - Used by more select group of people
+- OLTP stored in operational db wich is pulled and cleaned to create OLAP warehouse
+#### Storing Data
+  

@@ -290,5 +290,61 @@ Fundamental concepts of data engineering including ETL, relational database prin
    - Queries complex, aggregate queries with limited updates
    - Used by more select group of people
 - OLTP stored in operational db wich is pulled and cleaned to create OLAP warehouse
-#### Storing Data
-  
+#### Star and Snowflake Schema
+- Star Schema - Dimensional modeling
+    - Fact tables
+        - Holds records of a metric
+        - Changes regulary
+        - Connects to dim tables by foreign keys
+    - Dimension Tables
+        - Hlds descriptions of attributes
+        - Does not change as often
+- Snowflake Schema
+    - Normalizes Dimension tables
+        - Divides tables into smaller tables and connects via relationships
+        - Goal to reduce redundancy and increase data integrity
+        - Identify repeating groups of data and create new tables for them
+- Normalized
+    - Normalized Benefits
+        - Reducing redundancy
+        - Ensure ures better data integrity
+            - Enforces data consistency
+                  - Helps with naming conventions
+            - Safer updating, removing, and inserting
+                  - Less records to alter
+            - Easier to redesign by extension
+                  - Smaller tables are easier to extend    
+     - Requires complex joins
+     - Perfect for OLTP databases
+     - Normalization Levels
+        - 1NF first normal form
+            - Each record must be unique - no duplicates
+            - Each cell must hold one value
+        - 2NF
+            - Must satisfy 1NF
+            - If primary Key is one column satisfies 2NF
+            - If COmposit primary key then each non-key column must be dependant on all the keys
+        - 3NF
+              - Satisifes 2NF
+              - No transitive dependencies
+                   - non-key columns can't depend on other non-key columns
+- Errors when incorrectly normalized
+    - Update Anomaly
+        - Data inconsistency caused by data redundancy when updating
+              - Requires updating more than one record
+              - User updating must remember redundancy and update all affiliated records
+    - Insertion Anomaly
+          - Unble to add a record dure to missing attributes
+          - New subscribers can't be updated until activly enroll
+    - Deletion Anolamy
+          - Deletion of records causes unintentional loss of data
+- Database views
+    - Virtual tables not part of physical schema
+    - Query not data is stored in memory
+    - Data is aggregated from data in tables
+    - Can be queried like database tables
+    - No need to retype common queries or alter schema
+- Managing view privelages
+      ****GRANT privilege****         ****REVOKE privileege****
+      ON object(table,view,schema)    ON object  
+      TO role or FROM role            TO role or FROM role

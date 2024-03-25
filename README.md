@@ -348,3 +348,27 @@ Fundamental concepts of data engineering including ETL, relational database prin
       ****GRANT privilege****         ****REVOKE privileege****
       ON object(table,view,schema)    ON object  
       TO role or FROM role            TO role or FROM role
+## Data Warehousing
+- Data Warehouse
+    - A computer system to store and analyze large amounts of data for an organization
+    - Gathers data from different areas of an organization
+    - Intergrates and stores data
+    - Makes it abailabel for analysis
+    - Support BI activity
+    - Enables effective organizational analysis and decision-making
+    - Find ways to innovate based on insights from thier data
+- Data Warehouse vs Data Lake
+    - Database stores data in tabular form of rows and columns
+    - ****Data Warehouse**** data is structured in tabluar form
+          - complex to change due to upstram and downstream effects
+          - size > 100 GB
+      - ****Data Mart****
+            - Relational DB for analysis
+            - Data focused on one department only
+            - Few imput sources, often a subset of a data warehouse
+            - Sixe typically < 100 GB
+        - ****Data Lake****
+              - Less complex to make changes fewer upstream and downstream effects
+              - Less organized with data that many not have a known purpose
+              - 
+- 
